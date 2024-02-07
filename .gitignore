@@ -1,0 +1,9 @@
+# CMake
+CMakeFiles/
+CMakeCache.txt
+build/
+CMakeScripts/
+Debug/
+
+# macOS
+*.xcodeproj/

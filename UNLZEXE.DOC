@@ -1,0 +1,85 @@
+************************************************************************
+
+                         UNLZEXE.EXE  Ver.0.5
+ 
+                written by Mitugu(Kou) Kurizono ,  05/17/90
+
+               UTJ44266 SIG "Global Village" in PC-VAN (Japan)
+
+************************************************************************
+
+  UNLZEXE converts the executable file which is compressed by Fabrice
+Bellard's LZEXE (ver.0.90,0.91) to decompressed executable one.
+
+  In the present version, a bug in the routine which expands the
+relocation table compressed by LZEXE ver. 0.90 was fixed.
+                                          ^^^^^
+
+USAGE:
+
+  There are three modes of operation.
+
+ 1. The most convenient and easy way to use UNLZEXE is, 
+
+        A>UNLZEXE filename[.EXE]
+
+where filename is the name of the EXE file to be decompressed. The extension
+".EXE" is implied by default. UNLZEXE uses a temporally file "$TMPFIL$.EXE",
+and makes a "new" decompressed "filename.exe". The old compressed file is
+renamed to "filename.OLZ".
+
+ 2. If you want a DIFFERENT file name for the decompressed one, type as 
+   follows,
+
+        A>UNLZEXE  packedfile[.EXE]]  unpackedfile[.EXE] 
+
+where packedfile  is the name of the compressed file by LZEXE and
+unpackedfile is the name of the decompressed file. The extensions ".EXE"
+are NOT required (default). The "packedfile.EXE" remains, and the 
+"unpackedfile.EXE" is created.
+
+
+ 3. If the SAME NAME for the "packedfile[.EXE]" and the "unpackedfile[.EXE]
+  is used,
+
+        A>UNLZEXE samename[.EXE]  samename[.EXE]
+
+UNLZEXE writes out decommpressed "$TMPFIL$.EXE", then the old "samename.exe"
+is DELETED, and finally "$TMPFIL$.EXE is renamed to "samename.exe".
+
+
+Notice: The UNpacked file is executable and its load module is the same
+======  as the original one, but the header and the relocation table of
+        the UNpacked executable file may be different from those of the
+        original executable file.
+          Please use UNLZEXE to study the function of LZEXE itself or
+        when you need to decompress the executable file that is originally
+        provided as decompressed form by LZEXE.
+
+        UNLZEXE is distributed as PUBLIC DOMAIN.
+
+        BUG reports and comments to the author are welcome.
+
+    Since the author does not have an ID of CompuServe, please contact
+Tamio TSUKAMOTO(ID:76663,226), or Masazumi TAKADA(ID:70007,2767) who is 
+the SigOP of the SIG "Global Village" in the Japanese computer network 
+"PC-VAN".
+
+
+----------------------------------------
+Files in this package:
+----------------------------------------
+UNLZEXE  EXE     9724  90-05-17   1:00
+UNLZEXE  C      11328  90-05-17   0:55
+UNLZEXE  DOC     3190  90-05-18   9:58
+----------------------------------------
+
+History:
+
+ 90/03/28 Ver. 0.2 An error of calculation for maxaloc was corrected.
+ 90/04/17 Ver. 0.3 File name specification was improved.
+ 90/05/12 Ver. 0.4 The 'super decompression ' problem was fixed.
+ 90/05/18 Ver. 0.5 An error of expanding the relocation table
+               compressed by LZEXE ver. 0.90 was fixed.
+                                       ^^^^^
+

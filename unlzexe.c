@@ -69,7 +69,7 @@ char *tmpfname = "$tmpfil$.exe";
 char *backup_ext = ".olz";
 char ipath[FILENAME_MAX],
      opath[FILENAME_MAX],
-     ofname[13];
+     ofname[FILENAME_MAX];
 
 int fnamechk(char*,char*,char*,int,char**);
 int fnamechg(char*,char*,char*,int);
@@ -157,7 +157,7 @@ int fnamechk(char *ipath,char *opath, char *ofname,
         printf("'%s':bad filename.\n",opath);
         return(FAILURE);
     }
-    strncpy(ofname,opath+idx_name,12);
+    strncpy(ofname,opath+idx_name,FILENAME_MAX-1);
     strcpy(opath+idx_name,tmpfname);
     return(SUCCESS);
 }

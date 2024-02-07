@@ -11,6 +11,8 @@ Orignal source code is written for C-compilers that compiles to 16bit-MSDOS. Sou
 
 Code is orignally written by Mitugu(Kou) Kurizono
 
+> UNLZEXE is distributed as PUBLIC DOMAIN.
+
 LZEXE was written by Fabrice Bellard, fabrice.bellard at free.fr.
 
 ## References
