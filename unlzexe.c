@@ -43,96 +43,10 @@ v0.9  Stian Skjelstad, stian.skjelstad@gmail.com, Aug 2019
 #include <stdint.h>        /* v0.9 */
 typedef uint16_t WORD;     /* v0.9 */
 typedef uint8_t BYTE;      /* v0.9 */
-#define stricmp strcasecmp /* v0.9 */
-
-char *tmpfname = "$tmpfil$.exe";
-char *backup_ext = ".olz";
 
 int reloc90(FILE *ifile,FILE *ofile,long fpos);
 int reloc91(FILE *ifile,FILE *ofile,long fpos);
 
-
-void parsepath(char *pathname, int *fname, int *ext);
-
-/* file name check */
-int fnamechk(char *ipath,char *opath, char *ofname,
-              int argc,char **argv) {
-    int idx_name,idx_ext;
-
-    strcpy(ipath,argv[1]);
-    parsepath(ipath,&idx_name,&idx_ext);
-    if (! ipath[idx_ext]) strcpy(ipath+idx_ext,".exe");
-    if(! stricmp(ipath+idx_name,tmpfname)){
-        printf("'%s':bad filename.\n",ipath);
-        return(FAILURE);
-    }
-    if(argc==2)
-        strcpy(opath,ipath);
-    else
-        strcpy(opath,argv[2]);
-    parsepath(opath,&idx_name,&idx_ext);
-    if (! opath[idx_ext]) strcpy(opath+idx_ext,".exe");
-    if (!stricmp(opath+idx_ext,backup_ext)){
-        printf("'%s':bad filename.\n",opath);
-        return(FAILURE);
-    }
-    strncpy(ofname,opath+idx_name,FILENAME_MAX-1);
-    strcpy(opath+idx_name,tmpfname);
-    return(SUCCESS);
-}
-
-
-int fnamechg(char *ipath,char *opath,char *ofname,int rename_sw) {
-    int idx_name,idx_ext;
-    char tpath[FILENAME_MAX];
-
-    if(rename_sw) {
-        strcpy(tpath,ipath);
-        parsepath(tpath,&idx_name,&idx_ext);
-        strcpy(tpath+idx_ext,backup_ext);
-        remove(tpath);
-        if(rename(ipath,tpath)){
-            printf("can't make '%s'.\n", tpath);
-            remove(opath);
-            return(FAILURE);
-        }
-	printf("'%s' is renamed to '%s'.\n",ipath,tpath);
-    }
-    strcpy(tpath,opath);
-    parsepath(tpath,&idx_name,&idx_ext);
-    strcpy(tpath+idx_name,ofname);
-    remove(tpath);
-    if(rename(opath,tpath)){
-        if(rename_sw) {
-            strcpy(tpath,ipath);
-            parsepath(tpath,&idx_name,&idx_ext);
-            strcpy(tpath+idx_ext,backup_ext);
-            rename(tpath,ipath);
-        }
-        printf("can't make '%s'.  unpacked file '%s' is remained.\n",
-                 tpath, tmpfname);
-
-        return(FAILURE);
-    }
-    printf("unpacked file '%s' is generated.\n",tpath);
-    return(SUCCESS);
-}
-
-void parsepath(char *pathname, int *fname, int *ext) {
-    char c;
-    int i;
-
-    *fname=0; *ext=0;
-    for(i=0;(c=pathname[i]);i++) {
-		switch(c) {
-			case ':' :
-			case '\\':  *fname=i+1; break;
-			case '.' :  *ext=i; break;
-			default  :  ;
-		}
-    }
-    if(*ext<=*fname) *ext=i;
-}
 /*-------------------------------------------*/
 static WORD ihead[0x10],ohead[0x10],inf[8];
 static long loadsize;
