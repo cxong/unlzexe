@@ -9,7 +9,8 @@ int main(int argc,char **argv){
 		printf("usage: decompress_example packedfile\n");
 		return 1;
 	}
-	char *buf = decompress(argv[1]);
+	size_t len;
+	char *buf = decompress(argv[1], &len);
 
 	free(buf);
 	return 0;
