@@ -5,11 +5,28 @@
 #include <string.h>
 #ifdef _MSC_VER
 #include <io.h>
-#define close _close
-#define mkstemp _mktemp
 #else
 #include <unistd.h>
 #endif
+
+FILE* make_temp_file(void)
+{
+	char opath[FILENAME_MAX];
+	strncpy(opath, "decompressXXXXXX", strlen("decompressXXXXXX") + 1);
+#ifdef _MSC_VER
+	char* filename = _mktemp(opath);
+	return fopen(filename, "w+b");
+#else
+	int fd = mkstemp(opath);
+	if (fd == -1) {
+		printf("can't create temp file.\n");
+		goto bail;
+	}
+	// Reopen in binary mode to be able to fseek
+	close(fd);
+	return fopen(opath, "w+b");
+#endif
+}
 
 char* decompress(const char* ipath, size_t* len) {
 	FILE* ifile = NULL;
@@ -28,18 +45,9 @@ char* decompress(const char* ipath, size_t* len) {
 	}
 	printf("file '%s' is compressed by LZEXE Ver. 0.%d\n", ipath, ver);
 
-	char opath[FILENAME_MAX];
-	strcpy(opath, "decompressXXXXXX");
-	int fd = mkstemp(opath);
-	if (fd == -1) {
-		printf("can't create temp file.\n");
-		goto bail;
-	}
-	// Reopen in binary mode to be able to fseek
-	close(fd);
-	ofile = fopen(opath, "w+b");
+	ofile = make_temp_file();
 	if (ofile == NULL) {
-		printf("can't open '%s'.\n", opath);
+		printf("can't create temp file.\n");
 		goto bail;
 	}
 
