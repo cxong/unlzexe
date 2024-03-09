@@ -3,7 +3,12 @@
 
 #include <stdlib.h>
 #include <string.h>
+#ifdef _MSC_VER
+#include <io.h>
+#define close _close
+#else
 #include <unistd.h>
+#endif
 
 char *decompress(const char *ipath, size_t *len) {
   FILE *ifile = NULL;
