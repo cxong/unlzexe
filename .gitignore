@@ -13,3 +13,9 @@ cmake_install.cmake
 .vs/
 *.vcxproj*
 *.sln
+
+# Linux
+Makefile
+decompress_example
+*.a
+main

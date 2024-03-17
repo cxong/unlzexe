@@ -20,7 +20,7 @@ FILE* make_temp_file(void)
 	int fd = mkstemp(opath);
 	if (fd == -1) {
 		printf("can't create temp file.\n");
-		goto bail;
+		return NULL;
 	}
 	// Reopen in binary mode to be able to fseek
 	close(fd);
