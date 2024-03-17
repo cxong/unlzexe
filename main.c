@@ -2,8 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 #ifdef _MSC_VER
+#include <fcntl.h>
 #include <io.h>
 #define close _close
+int mkstemp(char *template)
+{
+    if (_mktemp_s(template, strlen(template)) != 0)
+    {
+        return -1;
+    }
+    return _open(template, _O_CREAT | _O_RDWR | O_BINARY);
+}
 #else
 #include <unistd.h>
 #endif
@@ -18,7 +27,6 @@ void parsepath(char *pathname, int *fname, int *ext);
 
 int main(int argc, char **argv)
 {
-  char ofname[FILENAME_MAX];
   FILE *ifile, *ofile;
   int ver, rename_sw = 0;
 
