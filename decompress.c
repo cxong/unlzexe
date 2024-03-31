@@ -9,9 +9,8 @@
 #include <unistd.h>
 #endif
 
-FILE* make_temp_file(void)
+FILE* make_temp_file(char* opath)
 {
-	char opath[FILENAME_MAX];
 	strncpy(opath, "decompressXXXXXX", strlen("decompressXXXXXX") + 1);
 #ifdef _MSC_VER
 	char* filename = _mktemp(opath);
@@ -33,6 +32,7 @@ char* decompress(const char* ipath, size_t* len) {
 	FILE* ofile = NULL;
 	char* buf = NULL;
 	int ver;
+	char opath[FILENAME_MAX];
 
 	if ((ifile = fopen(ipath, "rb")) == NULL) {
 		printf("'%s' :not found\n", ipath);
@@ -45,7 +45,7 @@ char* decompress(const char* ipath, size_t* len) {
 	}
 	printf("file '%s' is compressed by LZEXE Ver. 0.%d\n", ipath, ver);
 
-	ofile = make_temp_file();
+	ofile = make_temp_file(opath);
 	if (ofile == NULL) {
 		printf("can't create temp file.\n");
 		goto bail;
@@ -85,6 +85,8 @@ char* decompress(const char* ipath, size_t* len) {
 	printf("Read %d bytes\n", (int)*len);
 
 	fclose(ofile);
+
+	remove(opath);
 
 	return buf;
 
