@@ -189,7 +189,7 @@ int mkreltbl(FILE *ifile,FILE *ofile,int ver) {
  *  ohead[4]= (int) (fpos+i)>>4;
  */
     i= (0x200 - (int) fpos) & 0x1ff;	/* v0.7 */
-    ohead[4]= (int) ((fpos+i)>>4);	/* v0.7 */
+    ohead[4]= (WORD) ((fpos+i)>>4);	/* v0.7 */
 
     for( ; i>0; i--)
         putc(0, ofile);
