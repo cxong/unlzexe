@@ -96,11 +96,6 @@ int main(int argc, char **argv)
   fclose(ifile);
   wrhead(ofile);
   fclose(ofile);
-
-  if (fnamechg(ipath, opath, rename_sw) != SUCCESS)
-  {
-    exit(EXIT_FAILURE);
-  }
   exit(EXIT_SUCCESS);
 }
 
