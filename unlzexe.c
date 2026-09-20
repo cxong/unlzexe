@@ -266,7 +266,8 @@ int unpack(FILE *ifile,FILE *ofile){
     WORD span;
     long fpos;
     bitstream bits;
-    static BYTE data[0x4500], *p=data;
+    static BYTE data[0x4500];
+    BYTE *p = data;
 
     fpos=((long)ihead[0x0b]-(long)inf[4]+(long)ihead[4])<<4;
     fseek(ifile,fpos,SEEK_SET);
